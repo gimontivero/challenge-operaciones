@@ -1,11 +1,11 @@
-﻿# Dashboard de soporte - Invera
+﻿# Dashboard de soporte - Challenge Operaciones
 
 Dashboard HTML para el challenge de Analista de Operaciones. La vista esta pensada para que un lider de Operaciones pueda revisar el flujo de soporte, detectar foco operativo y simular una alerta accionable.
 
 ## Archivos
 
 - `index.html`: dashboard final.
-- `logo.svg`: logo de Invera usado en el header.
+- `logo.svg`: logo usado en el header.
 - `README.md`: descripcion del entregable.
 - `proceso-ia.pdf`: documento breve sobre proceso, herramientas, correcciones y supuestos.
 
