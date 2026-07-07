@@ -2147,9 +2147,9 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
       const slowFirstResponse = rows.filter(r => r.tiempo_primera_respuesta_hs > 2).length;
       if (actions.length < 3 && slowFirstResponse) {
         actions.push({
-          kicker: "Guardrail",
+          kicker: "3. Relacion cliente",
           title: "Controlar primera respuesta menor a 2 hs",
-          body: `Hay ${slowFirstResponse} tickets con primera respuesta por encima del objetivo operativo. Usarlo como control diario de triage.`,
+          body: `Hay ${slowFirstResponse} tickets con primera respuesta por encima del objetivo operativo. Usar este indicador como control diario de triage.`,
           tags: [pill(`${slowFirstResponse} fuera de objetivo`, "amber", "age")]
         });
       }
