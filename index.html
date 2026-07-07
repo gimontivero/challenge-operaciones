@@ -180,6 +180,105 @@
       color: var(--ink);
     }
 
+    .executive-summary {
+      position: relative;
+      min-width: 0;
+      margin: 0 0 16px;
+      padding: 18px 18px 16px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.025)),
+        var(--panel);
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--muted);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .executive-summary--critical {
+      border-left-color: var(--red);
+    }
+
+    .executive-summary--attention {
+      border-left-color: var(--amber);
+    }
+
+    .executive-summary--stable {
+      border-left-color: var(--green);
+    }
+
+    .executive-summary--process {
+      border-left-color: var(--blue);
+    }
+
+    .executive-summary--empty {
+      border-left-color: rgba(255, 255, 255, 0.28);
+    }
+
+    .executive-summary__top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .executive-summary__eyebrow {
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .executive-summary h2 {
+      margin: 0;
+      max-width: 980px;
+      font-size: clamp(20px, 2.7vw, 30px);
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .executive-summary p {
+      margin: 10px 0 0;
+      max-width: 980px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .executive-summary__action,
+    .executive-summary__secondary-risk {
+      margin-top: 12px;
+      max-width: 980px;
+      color: var(--ink);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .executive-summary__action strong,
+    .executive-summary__secondary-risk strong {
+      color: var(--cyan);
+    }
+
+    .executive-summary__secondary-risk {
+      color: var(--muted);
+    }
+
+    .executive-summary__chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .executive-summary__context {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
     label {
       display: block;
       color: var(--muted);
@@ -415,6 +514,11 @@
     .pill.blue {
       background: var(--soft-blue);
       color: var(--blue);
+    }
+
+    .pill.neutral {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--muted);
     }
 
     .scatter {
@@ -1035,6 +1139,14 @@
         grid-template-columns: 1fr;
       }
 
+      .executive-summary {
+        padding: 15px;
+      }
+
+      .executive-summary h2 {
+        font-size: 20px;
+      }
+
       .combo-row {
         grid-template-columns: 1fr;
         gap: 7px;
@@ -1063,7 +1175,7 @@
       <div>
         <div class="brand-row"><img src="logo.svg" alt="Invera" /></div>
         <h1>Reporting de soporte</h1>
-        <p class="subtitle">Visibilidad operativa del flujo de tickets: volumen, clientes afectados, bugs escalables, tendencia y prioridad de atencion.</p>
+        <p class="subtitle">Visibilidad operativa del flujo de tickets: volumen, clientes afectados, bugs escalables, tendencia y prioridad de atención.</p>
       </div>
       <div class="source-chip">
         <strong>Invera - Operaciones</strong><br />
@@ -1075,7 +1187,7 @@
   <main>
     <section class="filters" aria-label="Filtros globales">
       <div>
-        <label for="periodFilter">Periodo</label>
+        <label for="periodFilter">Período</label>
         <select id="periodFilter"></select>
       </div>
       <div id="dateFromWrap" class="custom-date">
@@ -1100,15 +1212,17 @@
     <div id="activeChips" class="active-chips" aria-label="Filtros activos"></div>
 
     <div id="tab-overview">
+      <section id="executiveSummary" class="executive-summary"></section>
+
       <section class="grid kpi-grid" id="kpis"></section>
 
       <section class="panel" style="margin-bottom: 16px;">
         <div class="panel-head">
           <div>
-            <h2>Prioridad de atencion inmediata</h2>
-            <p class="panel-note">Tickets a atacar por criticidad, escalado, cliente y tipo de bug.</p>
+            <h2>Prioridad de atención inmediata</h2>
+            <p class="panel-note">Casos priorizados por criticidad, escalamiento, cliente afectado y recurrencia del bug.</p>
           </div>
-          <span class="pill red">Decision diaria</span>
+          <span class="pill red">Decisión diaria</span>
         </div>
         <div class="priority-layout">
           <div id="priorityCards" class="priority-grid"></div>
@@ -1132,12 +1246,12 @@
         <article class="panel">
           <div class="panel-head">
             <div>
-              <h2>Evolucion semanal de tickets</h2>
-              <p class="panel-note">Tickets creados vs cerrados por semana en el periodo filtrado.</p>
+              <h2>Evolución semanal de tickets</h2>
+              <p class="panel-note">Tickets creados vs cerrados por semana en el período filtrado.</p>
             </div>
             <span class="pill green" id="trendPill">-</span>
           </div>
-          <svg id="trendSvg" class="svg-chart" role="img" aria-label="Evolucion semanal de tickets"></svg>
+          <svg id="trendSvg" class="svg-chart" role="img" aria-label="Evolución semanal de tickets"></svg>
         </article>
       </section>
 
@@ -1145,7 +1259,7 @@
         <div class="panel-head">
           <div>
             <h2>Patrones de incidencia</h2>
-            <p class="panel-note">Bugs que concentran volumen, clientes afectados, backlog y escalaciones.</p>
+            <p class="panel-note">Bugs que concentran volumen, clientes afectados, backlog y tickets escalados.</p>
           </div>
         </div>
         <svg id="bottleneckImpactSvg" class="svg-chart tall" role="img" aria-label="Patrones de incidencia por volumen e impacto operativo"></svg>
@@ -1155,7 +1269,7 @@
         <div class="panel-head">
           <div>
             <h2>Clientes afectados</h2>
-            <p class="panel-note">Ranking operativo por demora de resolucion, criticidad e insatisfaccion.</p>
+            <p class="panel-note">Ranking operativo por demora de resolución, criticidad e insatisfacción.</p>
           </div>
           <span class="pill amber">Ranking operativo</span>
         </div>
@@ -1167,7 +1281,7 @@
         <div class="panel-head">
           <div>
             <h2>Acciones recomendadas</h2>
-            <p class="panel-note">Proximas acciones priorizadas por criticidad, backlog, demora y satisfaccion.</p>
+            <p class="panel-note">Próximas acciones priorizadas por criticidad, backlog, demora y satisfacción.</p>
           </div>
         </div>
         <div class="action-grid" id="recommendationCards"></div>
@@ -1185,7 +1299,7 @@
           <span class="alert-check" aria-hidden="true"></span>
           <div class="alert-copy">
             <strong>Cliente en riesgo</strong>
-            <span>Detecta clientes con backlog, escalaciones, aging o baja satisfaccion.</span>
+            <span>Detecta clientes con backlog, tickets escalados, aging o baja satisfacción.</span>
           </div>
         </label>
         <label class="alert-option">
@@ -1193,7 +1307,7 @@
           <span class="alert-check" aria-hidden="true"></span>
           <div class="alert-copy">
             <strong>Bug con volumen alto de tickets</strong>
-            <span>Detecta patrones de incidencia con muchos tickets, abiertos, escalados o clientes afectados.</span>
+            <span>Detecta patrones de incidencia con muchos tickets, backlog, tickets escalados o clientes afectados.</span>
           </div>
         </label>
       </div>
@@ -1207,10 +1321,10 @@
   </div>
 
   <script>
-    // Google Sheets conectado como fuente viva. JSONP evita bloqueos CORS en HTML estatico.
+    // Google Sheets conectado como fuente viva. JSONP evita bloqueos CORS en HTML estático.
     const SHEET_GVIZ_URL = "https://docs.google.com/spreadsheets/d/1UM-ukK-6l8NJtXShLErb3E4H4Gx6_v0AuIo9DMssdgU/gviz/tq?gid=0";
     const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1UM-ukK-6l8NJtXShLErb3E4H4Gx6_v0AuIo9DMssdgU/gviz/tq?tqx=out:csv&gid=0";
-    const ALERT_MODE = "simulacion";
+    const ALERT_MODE = "simulación";
 
     const fallbackCsv = `ticket_id,fecha_apertura,fecha_cierre,cliente,categoria,prioridad,estado,asignado_a,tiempo_primera_respuesta_hs,tiempo_resolucion_hs,requirio_escalado,satisfaccion_cliente,tipo_bug
 TKT-001,2026-04-01,2026-04-01,Balanz Capital,Accesos,Alta,Cerrado,Lucia,1,3,No,5,
@@ -1301,12 +1415,30 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
     const byId = id => document.getElementById(id);
     const clean = value => String(value || "").trim();
     const normalizeYesNo = value => clean(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const displayText = value => ({
+      Configuracion: "Configuración",
+      "Caida de servicio puntual": "Caída de servicio puntual",
+      "Timeout de conexion": "Timeout de conexión",
+      "Error de validacion de datos": "Error de validación de datos",
+      "Error de conciliacion de saldos": "Error de conciliación de saldos",
+      "Error de mapeo de cuentas": "Error de mapeo de cuentas"
+    })[value] || value;
     const fmt = (value, suffix = "") => value === null || value === undefined || Number.isNaN(value) ? "-" : `${Number(value).toLocaleString("es-AR", { maximumFractionDigits: 1 })}${suffix}`;
+    const countLabel = (value, singular, plural) => `${value} ${value === 1 ? singular : plural}`;
     const pct = value => `${Number(value || 0).toLocaleString("es-AR", { maximumFractionDigits: 1 })}%`;
+    const pctOf = (part, total) => total ? pct(part / total * 100) : "-";
     const tooltipText = value => String(value ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const isEscalated = row => row.requirio_escalado === "Si" || row.estado === "Escalado";
+    const isOpen = row => !row.fecha_cierre;
+    const maxAgingDays = rows => {
+      const openRows = rows.filter(isOpen);
+      if (!openRows.length) return null;
+      return Math.ceil(Math.max(...openRows.map(row => hoursOpen(row) / 24)));
+    };
+    const fmtDays = value => value === null || value === undefined || Number.isNaN(value) ? "-" : `${value} ${value === 1 ? "día" : "días"}`;
     const daysOpenLabel = value => {
       const days = Math.max(0, Math.ceil(value || 0));
-      return `${days} ${days === 1 ? "dia" : "dias"} abierto`;
+      return `${days} ${days === 1 ? "día" : "días"} abierto`;
     };
 
     function showTooltip(event, html) {
@@ -1376,14 +1508,14 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
 
       if (includeCustomer && customer) {
         lines.push(`<strong>Cliente en riesgo: ${tooltipText(customer.cliente)}</strong>`);
-        lines.push(`<span>${customer.tickets} tickets totales | ${customer.abiertos} abiertos | ${customer.escalados} escalados | Sat ${fmt(customer.sat)} | Impacto ${fmt(customer.impact)} pts</span>`);
-        lines.push(`<span>Accion sugerida: seguimiento proactivo, ETA visible y agrupacion de casos relacionados.</span>`);
+        lines.push(`<span>${customer.tickets} tickets totales | ${customer.abiertos} sin cerrar | ${customer.escalados} tickets escalados | Sat ${fmt(customer.sat)} | Impacto ${fmt(customer.impact)} pts</span>`);
+        lines.push(`<span>Acción sugerida: seguimiento proactivo, ETA visible y agrupación de casos relacionados.</span>`);
       }
 
       if (includeBug && bug) {
         lines.push(`<strong>Bug con volumen alto de tickets: ${tooltipText(bug.tipo)}</strong>`);
-        lines.push(`<span>${bug.total} tickets totales | ${bug.open} abiertos | ${bug.escalated} escalados | ${bug.clients} clientes afectados</span>`);
-        lines.push(`<span>Accion sugerida: agrupar casos relacionados y validar si existe una causa comun.</span>`);
+        lines.push(`<span>${bug.total} tickets totales | ${bug.open} sin cerrar | ${bug.escalated} tickets escalados | ${bug.clients} clientes afectados</span>`);
+        lines.push(`<span>Acción sugerida: agrupar casos relacionados y validar si existe una causa común.</span>`);
       }
 
       if ((includeCustomer && !customer) || (includeBug && !bug)) {
@@ -1404,7 +1536,7 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
       if (primaryButton.dataset.mode === "save") {
         const message = byId("alertModalStatus").textContent || "Alerta guardada.";
         const cardStatus = byId("slackAlertStatus");
-        if (cardStatus) cardStatus.textContent = message.replace("Simulacion creada", "Simulacion guardada");
+        if (cardStatus) cardStatus.textContent = message.replace("Simulación creada", "Simulación guardada");
         closeAlertModal();
         return;
       }
@@ -1421,7 +1553,7 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
       preview.innerHTML = simulatedSlackAlert(types, filteredRows());
       preview.classList.add("open");
       const label = types.length > 1 ? "cliente en riesgo y bug con volumen alto" : types[0] === "cliente_riesgo" ? "cliente en riesgo" : "bug con volumen alto";
-      const message = `Simulacion creada: alerta de ${label}.`;
+      const message = `Simulación creada: alerta de ${label}.`;
       status.textContent = message;
       if (cardStatus) cardStatus.textContent = message;
       primaryButton.textContent = "Guardar alerta";
@@ -1462,8 +1594,21 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
         row.tiempo_primera_respuesta_hs = Number(row.tiempo_primera_respuesta_hs || 0);
         row.tiempo_resolucion_hs = row.tiempo_resolucion_hs === "" ? null : Number(row.tiempo_resolucion_hs);
         row.satisfaccion_cliente = row.satisfaccion_cliente === "" ? null : Number(row.satisfaccion_cliente);
+        row.categoria = displayText(row.categoria);
+        row.tipo_bug = displayText(row.tipo_bug);
         return row;
       }).filter(row => row.ticket_id);
+    }
+
+    function validateSheetCsv(csv) {
+      if (!csv.includes("ticket_id") || !csv.includes("fecha_apertura")) {
+        throw new Error("El Sheet no devolvió una base de tickets válida");
+      }
+      const sheetCount = parseCsv(csv).length;
+      const fallbackCount = parseCsv(fallbackCsv).length;
+      if (fallbackCount && sheetCount < fallbackCount) {
+        throw new Error(`El Sheet devolvió ${sheetCount} tickets de ${fallbackCount} esperados. Puede haber un filtro activo en Google Sheets.`);
+      }
     }
 
     function csvEscape(value) {
@@ -1532,9 +1677,7 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
       if (SHEET_GVIZ_URL) {
         try {
           const csv = await loadSheetJsonp();
-          if (!csv.includes("ticket_id") || !csv.includes("fecha_apertura")) {
-            throw new Error("El Sheet no devolvio una base de tickets valida");
-          }
+          validateSheetCsv(csv);
           byId("sourceLabel").textContent = "Fuente: Google Sheet";
           return csv;
         } catch (error) {
@@ -1547,9 +1690,7 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
           const response = await fetch(SHEET_CSV_URL, { cache: "no-store" });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const csv = await response.text();
-          if (!csv.includes("ticket_id") || !csv.includes("fecha_apertura")) {
-            throw new Error("El Sheet no devolvio una base de tickets valida");
-          }
+          validateSheetCsv(csv);
           byId("sourceLabel").textContent = "Fuente: Google Sheet";
           return csv;
         } catch (error) {
@@ -1557,7 +1698,7 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
         }
       }
 
-      byId("sourceLabel").textContent = SHEET_GVIZ_URL || SHEET_CSV_URL ? "Fuente: CSV embebido (Sheet no disponible)" : "Fuente: CSV embebido";
+      byId("sourceLabel").textContent = SHEET_GVIZ_URL || SHEET_CSV_URL ? "Fuente: CSV embebido (Sheet filtrado o no disponible)" : "Fuente: CSV embebido";
       return fallbackCsv;
     }
 
@@ -1675,7 +1816,7 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
       byId("dateFrom").value = minDate;
       byId("dateTo").value = maxDate;
       byId("periodFilter").innerHTML = [
-        ["all", "Todo el periodo"],
+        ["all", "Todo el período"],
         ["current_month", "Mes actual"],
         ["previous_month", "Mes anterior"],
         ["year", "Año completo"],
@@ -1684,9 +1825,9 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
         ["custom", "Rango personalizado"]
       ].map(([value, label]) => `<option value="${value}">${label}</option>`).join("");
       byId("periodFilter").value = filters.period;
-      populateSelect("statusFilter", unique(tickets, "estado"), "Todos", filters.estado);
+      populateSelect("statusFilter", ["Abierto", "En progreso", "Escalado", "Cerrado"], "Todos", filters.estado);
       if (byId("freshnessLabel")) {
-        byId("freshnessLabel").textContent = `Periodo: ${minDate} al ${maxDate}`;
+        byId("freshnessLabel").textContent = `Período: ${minDate} al ${maxDate}`;
       }
       setDatePreset(filters.period);
 
@@ -1747,7 +1888,7 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
 
     function periodLabel() {
       const labels = {
-        all: "Todo el periodo",
+        all: "Todo el período",
         current_month: "Mes actual",
         previous_month: "Mes anterior",
         year: "Año completo",
@@ -1755,12 +1896,12 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
         last_30: "Últimos 30 días",
         custom: "Rango personalizado"
       };
-      return labels[filters.period] || "Periodo";
+      return labels[filters.period] || "Período";
     }
 
     function renderActiveChips() {
       const chips = [];
-      if (filters.period !== "all") chips.push(["period", "Periodo", `${periodLabel()} (${filters.dateFrom} a ${filters.dateTo})`]);
+      if (filters.period !== "all") chips.push(["period", "Período", `${periodLabel()} (${filters.dateFrom} a ${filters.dateTo})`]);
       if (filters.estado !== "Todos") chips.push(["estado", "Estado", filters.estado]);
       byId("activeChips").innerHTML = chips.map(([key, label, value]) => `<button class="filter-chip" type="button" data-clear="${key}"><strong>${label}:</strong> ${value} x</button>`).join("");
       byId("activeChips").querySelectorAll("[data-clear]").forEach(chip => {
@@ -1782,17 +1923,57 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
     }
 
     function renderKpis(rows) {
-      const closed = rows.filter(r => r.estado === "Cerrado");
-      const open = rows.filter(r => r.estado !== "Cerrado");
-      const escalated = rows.filter(r => r.requirio_escalado === "Si" || r.estado === "Escalado").length;
+      const closed = rows.filter(r => r.fecha_cierre);
+      const open = rows.filter(isOpen);
+      const escalated = rows.filter(isEscalated).length;
       const highOpen = open.filter(r => r.prioridad === "Alta").length;
       const avgSat = mean(closed.map(r => r.satisfaccion_cliente));
-      const cards = [
-        ["Tiempo promedio resolucion", fmt(mean(closed.map(r => r.tiempo_resolucion_hs)), " hs"), "Tickets cerrados"],
-        ["% escalados", pct(rows.length ? escalated / rows.length * 100 : 0), `${escalated} de ${rows.length} tickets`],
-        ["Tickets abiertos criticos", highOpen, "Prioridad Alta sin cerrar"],
-        ["Satisfaccion promedio", fmt(avgSat), `${closed.filter(r => r.satisfaccion_cliente !== null).length} respuestas`]
-      ];
+      const avgResolution = mean(closed.map(r => r.tiempo_resolucion_hs));
+      const satisfactionResponses = closed.filter(r => r.satisfaccion_cliente !== null).length;
+      const highClosed = closed.filter(r => r.prioridad === "Alta");
+      const highClosedAvgResolution = mean(highClosed.map(r => r.tiempo_resolucion_hs));
+      const highRows = rows.filter(r => r.prioridad === "Alta").length;
+      const state = filters.estado;
+      let cards;
+
+      if (state === "Cerrado") {
+        const closedEscalated = closed.filter(isEscalated).length;
+        cards = [
+          ["Tiempo promedio resolución", fmt(avgResolution, " hs"), "Tickets cerrados"],
+          ["% cerrados que fueron escalados", pctOf(closedEscalated, closed.length), `${closedEscalated} de ${closed.length} cerrados`],
+          ["Promedio resolución críticos", fmt(highClosedAvgResolution, " hs"), "Prioridad Alta resueltos"],
+          ["Satisfacción promedio", fmt(avgSat), `${satisfactionResponses} respuestas`]
+        ];
+      } else if (state === "Abierto") {
+        cards = [
+          ["Tickets abiertos", rows.length, "Backlog actual"],
+          ["% abiertos con escalamiento", pctOf(escalated, rows.length), `${escalated} de ${rows.length} abiertos`],
+          ["Abiertos críticos", highRows, "Prioridad Alta"],
+          ["Mayor aging", fmtDays(maxAgingDays(rows)), "Ticket más antiguo sin cerrar"]
+        ];
+      } else if (state === "En progreso") {
+        cards = [
+          ["Tickets en progreso", rows.length, "Trabajo activo"],
+          ["% en progreso con escalamiento", pctOf(escalated, rows.length), `${escalated} de ${rows.length} en progreso`],
+          ["En progreso críticos", highRows, "Prioridad Alta"],
+          ["Mayor aging", fmtDays(maxAgingDays(rows)), "Ticket más antiguo sin cerrar"]
+        ];
+      } else if (state === "Escalado") {
+        cards = [
+          ["Tickets escalados", rows.length, "Requieren seguimiento"],
+          ["Escalados críticos", highRows, "Prioridad Alta"],
+          ["Aging máximo de escalados", fmtDays(maxAgingDays(rows)), "Mayor tiempo sin resolver"],
+          ["Primera respuesta promedio", fmt(mean(rows.map(r => r.tiempo_primera_respuesta_hs)), " hs"), "Tiempo inicial de atención"]
+        ];
+      } else {
+        cards = [
+          ["Tiempo promedio resolución", fmt(avgResolution, " hs"), "Tickets cerrados"],
+          ["% tickets escalados", pctOf(escalated, rows.length), `${escalated} de ${rows.length} tickets`],
+          ["Tickets sin cerrar críticos", highOpen, "Prioridad Alta sin cerrar"],
+          ["Satisfacción promedio", fmt(avgSat), `${satisfactionResponses} respuestas`]
+        ];
+      }
+
       byId("kpis").innerHTML = cards.map(([label, value, context]) => `
         <article class="kpi">
           <div class="kpi-label">${label}</div>
@@ -1924,7 +2105,7 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
         return {
           cliente,
           tickets: list.length,
-          abiertos: list.filter(r => r.estado !== "Cerrado").length,
+          abiertos: list.filter(r => !r.fecha_cierre).length,
           medRes,
           sat,
           escalados,
@@ -1964,7 +2145,7 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
         const bars = [
           { label: "Demora", value: d.delayScore, color: chartBlue, y: y + 2 },
           { label: "Criticidad", value: d.criticalScore, color: chartGreen, y: y + 18 },
-          { label: "Insatisfaccion", value: d.dissatisfactionScore, color: chartOrange, y: y + 34 }
+          { label: "Insatisfacción", value: d.dissatisfactionScore, color: chartOrange, y: y + 34 }
         ];
         return `
           <text x="${left - 12}" y="${y + 25}" text-anchor="end" font-size="12" fill="${chartInk}">${d.cliente}</text>
@@ -1985,13 +2166,13 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
         ${rowsSvg}
         <circle cx="${left + 10}" cy="${h - 10}" r="5" fill="${chartBlue}"></circle><text x="${left + 20}" y="${h - 6}" font-size="12" fill="${chartInk}">Demora</text>
         <circle cx="${left + 100}" cy="${h - 10}" r="5" fill="${chartGreen}"></circle><text x="${left + 110}" y="${h - 6}" font-size="12" fill="${chartInk}">Criticidad</text>
-        <circle cx="${left + 210}" cy="${h - 10}" r="5" fill="${chartOrange}"></circle><text x="${left + 220}" y="${h - 6}" font-size="12" fill="${chartInk}">Insatisfaccion</text>
+        <circle cx="${left + 210}" cy="${h - 10}" r="5" fill="${chartOrange}"></circle><text x="${left + 220}" y="${h - 6}" font-size="12" fill="${chartInk}">Insatisfacción</text>
       `;
     }
 
     function bugRootCauseSummary(rows) {
       return Object.entries(groupBy(rows.filter(r => r.categoria === "Bug" && r.tipo_bug), "tipo_bug")).map(([tipo, list]) => {
-        const open = list.filter(r => r.estado !== "Cerrado");
+        const open = list.filter(r => !r.fecha_cierre);
         const escalated = list.filter(r => r.estado === "Escalado" || r.requirio_escalado === "Si").length;
         const highPriority = list.filter(r => r.prioridad === "Alta").length;
         const clients = new Set(list.map(r => r.cliente)).size;
@@ -2009,6 +2190,252 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
         };
       }).filter(d => d.total)
         .sort((a, b) => b.score - a.score || b.open - a.open || b.total - a.total);
+    }
+
+    function renderExecutiveSummary(rows) {
+      const target = byId("executiveSummary");
+      const context = `Conclusión basada en: ${periodLabel()} · Estado: ${filters.estado}`;
+
+      if (!rows.length) {
+        target.className = "executive-summary executive-summary--empty";
+        target.innerHTML = `
+          <div class="executive-summary__top">
+            <span class="executive-summary__eyebrow">Alerta ejecutiva</span>
+            ${pill("Sin datos", "neutral", "status")}
+          </div>
+          <h2>Sin datos para el filtro aplicado</h2>
+          <p>No hay tickets para este período o estado. Revisar otro filtro o limpiar la selección.</p>
+          <div class="executive-summary__action"><strong>Acción recomendada:</strong> cambiar el período, ampliar el rango de fechas o limpiar filtros para recuperar visibilidad.</div>
+          <div class="executive-summary__context">${context}</div>
+        `;
+        return;
+      }
+
+      const closed = rows.filter(r => r.estado === "Cerrado");
+      const openRows = rows.filter(r => !r.fecha_cierre);
+      const highPriority = rows.filter(r => r.prioridad === "Alta");
+      const openCritical = openRows.filter(r => r.prioridad === "Alta");
+      const activeEscalated = openRows.filter(r => r.estado === "Escalado" || r.requirio_escalado === "Si");
+      const escalated = rows.filter(r => r.estado === "Escalado" || r.requirio_escalado === "Si");
+      const firstResponseOverGoal = rows.filter(r => r.tiempo_primera_respuesta_hs > 2);
+      const avgFirstResponse = mean(rows.map(r => r.tiempo_primera_respuesta_hs));
+      const avgResolution = mean(closed.map(r => r.tiempo_resolucion_hs));
+      const medResolution = median(closed.map(r => r.tiempo_resolucion_hs));
+      const avgSatisfaction = mean(closed.map(r => r.satisfaccion_cliente));
+      const affectedClients = new Set(rows.map(r => r.cliente)).size;
+      const pctEscalated = rows.length ? escalated.length / rows.length * 100 : 0;
+      const topOpenTicket = openRows
+        .map(r => ({ ...r, score: priorityScore(r, rows), agingDays: hoursOpen(r) / 24 }))
+        .sort((a, b) => b.score - a.score || b.agingDays - a.agingDays)[0];
+      const maxAgingDays = openRows.length ? Math.max(...openRows.map(r => hoursOpen(r) / 24)) : 0;
+      const maxAgingRounded = Math.ceil(maxAgingDays);
+      const agingPhrase = maxAgingRounded >= 1 ? ` y el mayor aging es de ${maxAgingRounded} ${maxAgingRounded === 1 ? "día" : "días"}` : "";
+      const priorityBacklogPhrase = openCritical.length === 1 ? "1 es de prioridad alta" : `${openCritical.length} son de prioridad alta`;
+      const escalatedBacklogPhrase = activeEscalated.length === 1 ? "1 es un ticket escalado" : `${activeEscalated.length} son tickets escalados`;
+
+      const bugFocus = bugRootCauseSummary(rows)[0];
+      const customerFocus = customerSummary(rows)[0];
+
+      if (filters.estado === "Cerrado") {
+        const focusParts = [];
+        if (bugFocus) {
+          focusParts.push(`${bugFocus.tipo} concentró ${bugFocus.total} tickets, ${bugFocus.escalated} tickets escalados y ${bugFocus.clients} clientes afectados`);
+        }
+        if (customerFocus) {
+          const satText = customerFocus.sat !== null ? `, satisfacción ${fmt(customerFocus.sat)}` : "";
+          focusParts.push(`${customerFocus.cliente} aparece como cliente foco por carga, demora o satisfacción${satText}`);
+        }
+        const reason = focusParts.length
+          ? `El período cerrado permite aprender de patrones históricos: ${focusParts.join("; ")}.`
+          : "El período cerrado no muestra un patrón dominante de bug o cliente, por lo que conviene revisar preventivamente los casos de mayor demora.";
+        const closedChips = [
+          bugFocus ? pill(`Bug foco: ${bugFocus.tipo}`, "blue", "bug") : "",
+          bugFocus ? pill(`${bugFocus.escalated} tickets escalados`, bugFocus.escalated ? "amber" : "green", "status") : "",
+          customerFocus ? pill(`Cliente foco: ${customerFocus.cliente}`, "green", "status") : "",
+          pill(`Resolución promedio: ${fmt(avgResolution, " hs")}`, "blue", "status"),
+          pill(`Satisfacción: ${fmt(avgSatisfaction)}`, avgSatisfaction !== null && avgSatisfaction < 3.5 ? "red" : "green", "status")
+        ].filter(Boolean);
+        const closedEvidenceChips = closedChips.length
+          ? `<div class="executive-summary__chips">${closedChips.join("")}</div>`
+          : "";
+
+        target.className = "executive-summary executive-summary--attention";
+        target.innerHTML = `
+          <div class="executive-summary__top">
+            <span class="executive-summary__eyebrow">Alerta ejecutiva</span>
+            ${pill("Aprendizaje histórico", "amber", "status")}
+          </div>
+          <h2>Aprendizaje histórico: revisar el bug o cliente que concentró más demora, tickets escalados o baja satisfacción para anticipar y corregir tickets futuros.</h2>
+          <p>${reason}</p>
+          <div class="executive-summary__action"><strong>Acción recomendada:</strong> documentar causa raíz, revisar el cliente más afectado y definir controles preventivos para futuros tickets.</div>
+          ${closedEvidenceChips}
+          <div class="executive-summary__context">${context}</div>
+        `;
+        return;
+      }
+
+      const structuralScore = bugFocus
+        ? bugFocus.total * 6 + bugFocus.open * 8 + bugFocus.escalated * 10 + bugFocus.clients * 7 + bugFocus.highPriority * 6
+        : 0;
+      const customerScore = customerFocus
+        ? customerFocus.tickets * 4
+          + customerFocus.abiertos * 6
+          + customerFocus.highPriority * 5
+          + customerFocus.escalados * 5
+          + Math.max(0, 4 - (customerFocus.sat || 4)) * 12
+          + Math.min(24, (customerFocus.medRes || 0) / 3)
+        : 0;
+      const operationalScore = openCritical.length * 22
+        + activeEscalated.length * 18
+        + openRows.length * 5
+        + Math.min(36, maxAgingDays * 2)
+        + (openRows.some(r => r.estado === "Escalado") ? 12 : 0);
+      const escalationProcessSignal = filters.estado === "Escalado"
+        ? 0
+        : rows.length >= 10
+          ? pctEscalated * 0.25
+          : Math.min(8, escalated.length * 2);
+      const firstResponseSignal = firstResponseOverGoal.length >= 5
+        ? firstResponseOverGoal.length * 2
+        : firstResponseOverGoal.length * 0.75;
+      const processScore = firstResponseSignal
+        + escalationProcessSignal
+        + (avgFirstResponse !== null && avgFirstResponse > 2 ? Math.min(8, (avgFirstResponse - 2) * 1.2) : 0)
+        + (avgResolution !== null && avgResolution > 50 ? Math.min(12, (avgResolution - 50) / 4) : 0)
+        + (avgSatisfaction !== null && avgSatisfaction < 3.4 ? (3.4 - avgSatisfaction) * 8 : 0);
+
+      const risks = [
+        {
+          key: "operational",
+          category: "Riesgo operativo inmediato",
+          tone: "critical",
+          badgeTone: "red",
+          score: operationalScore,
+          relevant: openCritical.length > 0 || activeEscalated.length > 0 || maxAgingDays >= 7,
+          title: "Prioridad crítica: como equipo tenemos que destrabar el backlog crítico, dar seguimiento al owner asignado y dar ETA visible.",
+          reason: `La conclusión se basa en ${countLabel(openRows.length, "ticket sin cerrar", "tickets sin cerrar")}; dentro de ese backlog, ${priorityBacklogPhrase} y ${escalatedBacklogPhrase}${agingPhrase}.`,
+          action: topOpenTicket
+            ? `Empezar por ${topOpenTicket.cliente} (${topOpenTicket.ticket_id}), confirmar owner y publicar próximos pasos.`
+            : "Ordenar el backlog abierto por criticidad, owner y aging para definir el primer desbloqueo.",
+          secondaryLabel: topOpenTicket ? `backlog crítico en ${topOpenTicket.cliente}` : "backlog operativo abierto",
+          chips: [
+            pill(`${openRows.length} tickets sin cerrar`, openRows.length >= 5 ? "red" : "amber", "status"),
+            pill(`${activeEscalated.length} tickets escalados`, activeEscalated.length ? "red" : "amber", "status"),
+            topOpenTicket ? pill(`${topOpenTicket.ticket_id}: ${daysOpenLabel(topOpenTicket.agingDays)}`, topOpenTicket.agingDays > 7 ? "red" : "amber", "age") : "",
+            bugFocus ? pill(`Bug foco: ${bugFocus.tipo}`, "blue", "bug") : ""
+          ].filter(Boolean)
+        },
+        {
+          key: "structural",
+          category: filters.estado === "Cerrado" ? "Aprendizaje histórico" : "Problema estructural / causa raíz",
+          tone: "attention",
+          badgeTone: "amber",
+          score: structuralScore,
+          relevant: !!bugFocus && (bugFocus.total >= 3 || bugFocus.clients >= 3 || bugFocus.escalated >= 2 || bugFocus.highPriority >= 3),
+          title: filters.estado === "Cerrado"
+            ? "Aprendizaje histórico: revisar el bug o cliente que concentró más demora, tickets escalados o baja satisfacción para anticipar y corregir tickets futuros."
+            : "El principal riesgo es la recurrencia del bug. Conviene atacar causa raíz para evitar nuevos tickets.",
+          reason: bugFocus
+            ? `${bugFocus.tipo} concentra ${bugFocus.total} tickets, ${bugFocus.clients} clientes afectados, ${bugFocus.escalated} tickets escalados y ${bugFocus.highPriority} casos de prioridad alta.`
+            : "No se identificó un bug dominante en el filtro actual.",
+          action: bugFocus
+            ? filters.estado === "Cerrado"
+              ? `Documentar el aprendizaje de ${bugFocus.tipo}, revisar el cliente más afectado y definir controles preventivos para futuros tickets.`
+              : `Agrupar los casos de ${bugFocus.tipo}, validar causa común y asignar owner técnico para una corrección preventiva.`
+            : "Revisar patrones por categoría para detectar recurrencia antes de que escale.",
+          secondaryLabel: bugFocus ? `recurrencia del bug ${bugFocus.tipo}` : "recurrencia de bugs",
+          chips: bugFocus ? [
+            pill(`Bug recurrente: ${bugFocus.tipo}`, "blue", "bug"),
+            pill(`${bugFocus.total} tickets`, "blue", "status"),
+            pill(`${bugFocus.clients} clientes afectados`, "green", "status"),
+            pill(`Tickets escalados: ${bugFocus.escalated}`, bugFocus.escalated ? "amber" : "green", "status"),
+            pill(`${bugFocus.open} sin cerrar`, bugFocus.open ? "red" : "green", "status")
+          ] : []
+        },
+        {
+          key: "customer",
+          category: "Riesgo de cliente",
+          tone: "attention",
+          badgeTone: "amber",
+          score: customerScore,
+          relevant: !!customerFocus && (customerFocus.tickets >= 3 || customerFocus.abiertos > 0 || customerFocus.highPriority >= 2 || customerFocus.escalados >= 2 || (customerFocus.sat !== null && customerFocus.sat < 3.8)),
+          title: "El foco debe ponerse en contener el riesgo del cliente más afectado con comunicación proactiva y plan de seguimiento.",
+          reason: customerFocus
+            ? `${customerFocus.cliente} concentra ${customerFocus.tickets} tickets, ${customerFocus.abiertos} sin cerrar, ${customerFocus.escalados} tickets escalados y satisfacción ${fmt(customerFocus.sat)}.`
+            : "No se identificó un cliente con riesgo concentrado en el filtro actual.",
+          action: customerFocus
+            ? `Enviar estado proactivo a ${customerFocus.cliente}, definir ETA visible y revisar si los casos comparten una misma causa.`
+            : "Mantener seguimiento preventivo de clientes con tickets sin cerrar o satisfacción baja.",
+          secondaryLabel: customerFocus ? `riesgo de cliente en ${customerFocus.cliente}` : "riesgo de cliente",
+          chips: customerFocus ? [
+            pill(`Cliente foco: ${customerFocus.cliente}`, customerFocus.sat !== null && customerFocus.sat < 3.5 ? "red" : "green", "status"),
+            pill(`${customerFocus.tickets} tickets`, "blue", "status"),
+            pill(`${customerFocus.abiertos} sin cerrar`, customerFocus.abiertos ? "red" : "green", "status"),
+            pill(`Satisfacción: ${fmt(customerFocus.sat)}`, customerFocus.sat !== null && customerFocus.sat < 3.5 ? "red" : "amber", "status"),
+            pill(`Resolución mediana: ${fmt(customerFocus.medRes, " hs")}`, "blue", "status")
+          ] : []
+        },
+        {
+          key: "process",
+          category: "Problema de proceso interno",
+          tone: "process",
+          badgeTone: "blue",
+          score: processScore,
+          relevant: firstResponseOverGoal.length >= 5 || (filters.estado !== "Escalado" && rows.length >= 10 && pctEscalated >= 45) || (avgResolution !== null && avgResolution > 55) || (avgFirstResponse !== null && avgFirstResponse > 5) || (avgSatisfaction !== null && avgSatisfaction < 3.4),
+          title: "Dar seguimiento al proceso de soporte: los tiempos de primera respuesta superan el objetivo. Revisar cómo se clasifican, priorizan y escalan los tickets al ingresar.",
+          reason: `Hay ${firstResponseOverGoal.length} tickets con primera respuesta mayor a 2 horas, ${pct(pctEscalated)} de tickets escalados y resolución promedio de ${fmt(avgResolution, " hs")}.`,
+          action: "Revisar cómo se clasifican, priorizan y escalan los tickets al ingresar, junto con alertas tempranas de primera respuesta.",
+          secondaryLabel: "fricción en el proceso interno de soporte",
+          chips: [
+            pill(`Primera respuesta fuera de objetivo: ${firstResponseOverGoal.length} tickets`, firstResponseOverGoal.length >= 5 ? "amber" : "green", "status"),
+            pill(`Resolución promedio: ${fmt(avgResolution, " hs")}`, avgResolution !== null && avgResolution > 50 ? "amber" : "blue", "status"),
+            pill(`Tickets escalados: ${escalated.length}`, pctEscalated >= 35 ? "amber" : "green", "status"),
+            pill(`Satisfacción: ${fmt(avgSatisfaction)}`, avgSatisfaction !== null && avgSatisfaction < 3.5 ? "red" : "green", "status")
+          ]
+        }
+      ];
+
+      const relevantRisks = risks
+        .filter(risk => risk.relevant && risk.score > 0)
+        .sort((a, b) => b.score - a.score);
+      const stableRisk = {
+        category: "Operación estable",
+        tone: "stable",
+        badgeTone: "green",
+        score: 0,
+        title: "No hay alertas operativas fuertes para este filtro. Mantener monitoreo y revisar preventivamente patrones menores.",
+        reason: `El filtro muestra ${rows.length} tickets, ${openRows.length} sin cerrar, ${escalated.length} tickets escalados y ${affectedClients} clientes afectados, sin una señal dominante de riesgo.`,
+        action: "Mantener revisión semanal de volumen, satisfacción y recurrencia de bugs para anticipar desvíos.",
+        secondaryLabel: "",
+        chips: [
+          pill(`${rows.length} tickets`, "blue", "status"),
+          pill(`${openRows.length} sin cerrar`, openRows.length ? "amber" : "green", "status"),
+          pill(`${affectedClients} clientes afectados`, "green", "status"),
+          pill(`Satisfacción: ${fmt(avgSatisfaction)}`, avgSatisfaction !== null && avgSatisfaction < 3.5 ? "red" : "green", "status")
+        ]
+      };
+      const primary = relevantRisks[0] || stableRisk;
+      const secondary = relevantRisks.find(risk => risk.key !== primary.key && risk.score >= Math.max(18, primary.score * 0.3));
+      const secondaryText = secondary
+        ? `<div class="executive-summary__secondary-risk"><strong>Riesgo secundario:</strong> ${secondary.secondaryLabel}.</div>`
+        : "";
+      const evidenceChips = primary.chips?.length
+        ? `<div class="executive-summary__chips">${primary.chips.join("")}</div>`
+        : "";
+
+      target.className = `executive-summary executive-summary--${primary.tone}`;
+      target.innerHTML = `
+        <div class="executive-summary__top">
+          <span class="executive-summary__eyebrow">Alerta ejecutiva</span>
+          ${pill(primary.category, primary.badgeTone, "status")}
+        </div>
+        <h2>${primary.title}</h2>
+        <p>${primary.reason}</p>
+        <div class="executive-summary__action"><strong>Acción recomendada:</strong> ${primary.action}</div>
+        ${evidenceChips}
+        ${secondaryText}
+        <div class="executive-summary__context">${context}</div>
+      `;
     }
 
     function renderBottleneckImpact(rows) {
@@ -2034,7 +2461,7 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
         return `
           <text x="${left - 12}" y="${y + 17}" text-anchor="end" font-size="12" fill="${chartInk}">${d.tipo}</text>
           <rect x="${left}" y="${y + 3}" width="${Math.max(3, totalW)}" height="12" rx="5" fill="${chartBlue}" ${tooltipAttrs(d.tipo, [`Tickets totales: ${d.total}`, `Clientes impactados: ${d.clients}`, `Escalados: ${d.escalated}`])}></rect>
-          <rect x="${left}" y="${y + 20}" width="${Math.max(0, openW)}" height="12" rx="5" fill="${chartGreen}" ${tooltipAttrs(d.tipo, [`Tickets abiertos: ${d.open}`, `Backlog: ${fmt(d.backlogDays)} dias`, `Prioridad alta: ${d.highPriority}`])}></rect>
+          <rect x="${left}" y="${y + 20}" width="${Math.max(0, openW)}" height="12" rx="5" fill="${chartGreen}" ${tooltipAttrs(d.tipo, [`Tickets sin cerrar: ${d.open}`, `Backlog: ${fmt(d.backlogDays)} días`, `Prioridad alta: ${d.highPriority}`])}></rect>
           <text x="${left + chartW + 10}" y="${y + 17}" font-size="11" fill="${chartMuted}">${d.clients} clientes</text>
         `;
       }).join("");
@@ -2043,13 +2470,13 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
         ${grid}
         ${rowsSvg || `<text x="${left}" y="80" font-size="13" fill="${chartMuted}">No hay bugs para el filtro actual.</text>`}
         <circle cx="${left + 10}" cy="${h - 14}" r="5" fill="${chartBlue}"></circle><text x="${left + 20}" y="${h - 10}" font-size="12" fill="${chartInk}">Tickets totales</text>
-        <circle cx="${left + 132}" cy="${h - 14}" r="5" fill="${chartGreen}"></circle><text x="${left + 142}" y="${h - 10}" font-size="12" fill="${chartInk}">Abiertos</text>
+        <circle cx="${left + 132}" cy="${h - 14}" r="5" fill="${chartGreen}"></circle><text x="${left + 142}" y="${h - 10}" font-size="12" fill="${chartInk}">Sin cerrar</text>
       `;
     }
 
     function priorityScore(row, rows) {
       const sameClient = rows.filter(r => r.cliente === row.cliente);
-      const sameBugOpen = rows.filter(r => r.tipo_bug === row.tipo_bug && r.estado !== "Cerrado").length;
+      const sameBugOpen = rows.filter(r => r.tipo_bug === row.tipo_bug && !r.fecha_cierre).length;
       const clientSat = mean(sameClient.filter(r => r.estado === "Cerrado").map(r => r.satisfaccion_cliente));
       return (row.prioridad === "Alta" ? 3 : 1)
         + (row.requirio_escalado === "Si" || row.estado === "Escalado" ? 2 : 0)
@@ -2060,7 +2487,7 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
     }
 
     function renderPriority(rows) {
-      const ranked = rows.filter(r => r.estado !== "Cerrado")
+      const ranked = rows.filter(r => !r.fecha_cierre)
         .map(r => ({ ...r, score: priorityScore(r, rows), agingDays: hoursOpen(r) / 24 }))
         .sort((a, b) => b.score - a.score || b.agingDays - a.agingDays)
         .slice(0, 4);
@@ -2074,30 +2501,28 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
             ${pill(daysOpenLabel(r.agingDays), r.agingDays > 7 ? "red" : "amber", "age")}
           </div>
         </article>
-      `).join("") || `<p class="subtle">Sin tickets abiertos en el filtro actual.</p>`;
+      `).join("") || `<p class="subtle">No hay tickets sin cerrar en el filtro actual.</p>`;
 
       const focus = bugRootCauseSummary(rows)[0];
       byId("bugFocusCard").innerHTML = focus ? `
         <div class="label">Principal alerta operativa</div>
         <h3>${focus.tipo}</h3>
         <div class="bug-focus-metrics">
-          ${pill(`${focus.total} tickets totales`, "blue", "status")}
-          ${pill(`${focus.open} tickets abiertos`, focus.open >= 2 ? "red" : "amber", "status")}
-          ${pill(`${focus.escalated} tickets escalados`, focus.escalated >= 3 ? "red" : "amber", "status")}
+          ${pill(`${focus.open} tickets sin cerrar`, focus.open >= 2 ? "red" : "amber", "status")}
           ${pill(`${focus.clients} clientes afectados`, "green", "status")}
         </div>
-        <p><strong>Accion sugerida:</strong> agrupar casos relacionados y validar si existe una causa comun.</p>
+        <p><strong>Acción sugerida:</strong> agrupar casos relacionados y validar si existe una causa común.</p>
         <div class="slack-status" id="slackAlertStatus"></div>
       ` : `
         <div class="label">Principal alerta operativa</div>
         <h3>Sin bugs en el filtro</h3>
-        <p>No hay tickets de categoria Bug para priorizar causa raiz en el periodo seleccionado.</p>
+        <p>No hay tickets de categoría Bug para priorizar causa raíz en el período seleccionado.</p>
         <div class="slack-status" id="slackAlertStatus"></div>
       `;
     }
 
     function renderRecommendations(rows) {
-      const openRows = rows.filter(r => r.estado !== "Cerrado");
+      const openRows = rows.filter(r => !r.fecha_cierre);
       const actions = [];
       const criticalOpen = openRows
         .map(r => ({ ...r, agingDays: hoursOpen(r) / 24 }))
@@ -2106,9 +2531,9 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
       if (criticalOpen.length) {
         const first = criticalOpen[0];
         actions.push({
-          kicker: "1. Atencion inmediata",
-          title: "Cerrar o destrabar tickets criticos",
-          body: `${criticalOpen.length} tickets abiertos combinan prioridad Alta, escalacion o aging. Empezar por ${first.cliente} (${first.ticket_id}) y dejar ETA visible.`,
+          kicker: "1. Atención inmediata",
+          title: "Cerrar o destrabar tickets críticos",
+          body: `${criticalOpen.length} tickets sin cerrar combinan prioridad Alta, escalamiento o aging. Empezar por ${first.cliente} (${first.ticket_id}) y dejar ETA visible.`,
           tags: [
             pill(`${criticalOpen.length} tickets`, "red", "status"),
             pill(daysOpenLabel(first.agingDays), first.agingDays > 7 ? "red" : "amber", "age")
@@ -2119,11 +2544,11 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
       const bugBacklog = bugRootCauseSummary(rows)[0];
       if (bugBacklog) {
         actions.push({
-          kicker: "2. Causa raiz",
+          kicker: "2. Causa raíz",
           title: `Resolver de fondo ${bugBacklog.tipo}`,
-          body: `Este bug concentra ${bugBacklog.total} tickets, ${bugBacklog.clients} clientes impactados y ${bugBacklog.escalated} escalaciones. Agrupar casos, asignar owner tecnico y definir correccion comun.`,
+          body: `Este bug concentra ${bugBacklog.total} tickets, ${bugBacklog.clients} clientes impactados y ${bugBacklog.escalated} tickets escalados. Agrupar casos, asignar owner técnico y definir corrección común.`,
           tags: [
-            pill(`${bugBacklog.open} abiertos`, bugBacklog.open >= 2 ? "red" : "amber", "status"),
+            pill(`${bugBacklog.open} sin cerrar`, bugBacklog.open >= 2 ? "red" : "amber", "status"),
             pill(`${bugBacklog.total} tickets`, "blue", "status")
           ]
         });
@@ -2134,9 +2559,9 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
         .sort((a, b) => b.impact - a.impact)[0];
       if (customerRisk) {
         actions.push({
-          kicker: "3. Relacion cliente",
+          kicker: "3. Relación cliente",
           title: `Seguimiento proactivo a ${customerRisk.cliente}`,
-          body: `Alta carga o satisfaccion sensible. Enviar estado, proximos pasos y fecha estimada para reducir incertidumbre del cliente.`,
+          body: `Alta carga o satisfacción sensible. Enviar estado, próximos pasos y fecha estimada para reducir incertidumbre del cliente.`,
           tags: [
             pill(`${customerRisk.tickets} tickets`, "blue", "bug"),
             pill(`Sat ${fmt(customerRisk.sat)}`, customerRisk.sat !== null && customerRisk.sat < 3.5 ? "red" : "amber", "status")
@@ -2147,9 +2572,9 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
       const slowFirstResponse = rows.filter(r => r.tiempo_primera_respuesta_hs > 2).length;
       if (actions.length < 3 && slowFirstResponse) {
         actions.push({
-          kicker: "3. Relacion cliente",
+          kicker: "3. Relación cliente",
           title: "Controlar primera respuesta menor a 2 hs",
-          body: `Hay ${slowFirstResponse} tickets con primera respuesta por encima del objetivo operativo. Usar este indicador como control diario de triage.`,
+          body: `Hay ${slowFirstResponse} tickets con primera respuesta por encima del objetivo operativo. Usar este indicador como control diario de clasificación y primera respuesta.`,
           tags: [pill(`${slowFirstResponse} fuera de objetivo`, "amber", "age")]
         });
       }
@@ -2161,12 +2586,13 @@ TKT-060,2026-06-12,,IOL Invertironline,Bug,Alta,Abierto,Martin,8,,Si,,Error de v
           <div>${action.body}</div>
           <div class="action-meta">${action.tags.join("")}</div>
         </div>
-      `).join("") || `<div class="action"><strong>Sin alertas operativas</strong>No hay tickets abiertos o riesgos suficientes para priorizar acciones en el filtro actual.</div>`;
+      `).join("") || `<div class="action"><strong>Sin alertas operativas</strong>No hay tickets sin cerrar o riesgos suficientes para priorizar acciones en el filtro actual.</div>`;
     }
 
     function render() {
       const rows = filteredRows();
       renderActiveChips();
+      renderExecutiveSummary(rows);
       renderKpis(rows);
       renderStatus(rows);
       renderTrend(rows);
